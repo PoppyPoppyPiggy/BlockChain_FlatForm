@@ -3,7 +3,7 @@ import json
 import time
 
 # 수집 간격 (초)
-interval = 3  # 1분마다 수집
+interval = 3  # 3초마다 수집
 
 def get_blockchain_info():
     """비트코인 노드의 블록체인 동기화 정보를 가져옵니다."""
@@ -21,9 +21,13 @@ def get_mempool_info():
     return json.loads(result.stdout)
 
 def log_sync_status():
-    """매 분마다 동기화 상태를 기록하고, 다운로드된 바이트와 트랜잭션 수를 로그로 출력합니다."""
+    """동기화 상태를 기록하고, 다운로드된 바이트와 트랜잭션 수를 로그 형식으로 출력합니다."""
     previous_bytes_recv = None
     previous_tx_count = None
+    previous_block = None
+    start_time = time.time()  # 스크립트 시작 시간
+    total_downloaded_bytes = 0  # 총 다운로드된 바이트
+    total_added_blocks = 0  # 총 추가된 블록 수
 
     try:
         while True:
@@ -39,32 +43,56 @@ def log_sync_status():
             tx_count = mempool_info['size']  # 메모리풀에서 트랜잭션 수 확인
             bytes_recv = network_totals['totalbytesrecv']
 
-            # 이전 데이터와 비교하여 지난 1분 동안 수신한 바이트 수와 트랜잭션 수 계산
+            # 이전 데이터와 비교하여 다운로드된 바이트 수와 트랜잭션 수 계산
             if previous_bytes_recv is not None:
                 downloaded_bytes = bytes_recv - previous_bytes_recv
                 new_tx = tx_count - previous_tx_count
+                added_blocks = current_block - previous_block
+                total_downloaded_bytes += downloaded_bytes
+                total_added_blocks += added_blocks
             else:
                 downloaded_bytes = 0
                 new_tx = 0
+                added_blocks = 0
 
-            # 진행 상황과 다운로드된 바이트, 트랜잭션 수를 로그로 출력
+            # 전체 평균 초당 다운로드 속도 및 블록 처리 속도 계산
+            elapsed_time = time.time() - start_time  # 시작 후 경과 시간
+            avg_bytes_per_second = total_downloaded_bytes / elapsed_time if elapsed_time > 0 else 0
+            avg_blocks_per_second = total_added_blocks / elapsed_time if elapsed_time > 0 else 0
+
+            # 남은 블록 수와 초당 블록 처리량을 기준으로 남은 시간 예상
+            remaining_blocks = total_blocks - current_block
+            if avg_blocks_per_second > 0:
+                estimated_time_remaining = remaining_blocks / avg_blocks_per_second
+            else:
+                estimated_time_remaining = float('inf')
+
+            # 남은 시간을 시간, 분, 초로 변환
+            if estimated_time_remaining != float('inf'):
+                hours, rem = divmod(estimated_time_remaining, 3600)
+                minutes, seconds = divmod(rem, 60)
+                eta = f"{int(hours)}h {int(minutes)}m {int(seconds)}s"
+            else:
+                eta = "N/A"
+
+            # 로그 형식 출력
             print(f"================= {time.strftime('%Y-%m-%d %H:%M:%S')} =================")
-            print(f"현재 블록: {current_block}/{total_blocks}")
-            print(f"진행 상황: {progress:.2f}%")
-            print(f"지난 {interval}초간 다운로드된 데이터: {downloaded_bytes / 1024 / 1024:.2f} MB")
-            print(f"지난 {interval}초간 처리된 트랜잭션 수: {new_tx}")
-            print(f"노드가 풀노드가 될 때까지 남은 블록 수: {total_blocks - current_block}")
+            print(f"Current block: {current_block}/{total_blocks} (Progress: {progress:.2f}%)")
+            print(f"Added blocks: +{added_blocks} | Remaining blocks: {remaining_blocks}")
+            print(f"Added data: +{downloaded_bytes / 1024 / 1024:.2f} MB | Speed: {avg_bytes_per_second / 1024 / 1024:.2f} MB/s")
+            print(f"Transactions: +{new_tx} | ETA: {eta}")
             print("=========================================================\n")
 
             # 현재 상태를 저장하여 다음 루프에서 비교
             previous_bytes_recv = bytes_recv
             previous_tx_count = tx_count
+            previous_block = current_block
 
-            # 1분 대기 후 다음 상태 체크
+            # 3초 대기 후 다음 상태 체크
             time.sleep(interval)
 
     except KeyboardInterrupt:
-        print("동기화 상태 로그 기록이 중단되었습니다.")
+        print("Sync log stopped.")
 
 # 스크립트 실행
 log_sync_status()
