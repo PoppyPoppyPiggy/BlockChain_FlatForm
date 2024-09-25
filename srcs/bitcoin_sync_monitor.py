@@ -3,6 +3,8 @@ import json
 import subprocess
 import time
 
+interval = 3
+
 def get_blockchain_info():
     result = subprocess.run(['bitcoin-cli', 'getblockchaininfo'], stdout=subprocess.PIPE)
     return json.loads(result.stdout)
@@ -62,7 +64,7 @@ def log_sync_status():
             'progress': progress,
             'addedBlocks': added_blocks,
             'addedData': downloaded_bytes / 1024 / 1024,
-            'speed': downloaded_bytes / 1024 / 1024 / 3,  # 3초당 MB/s
+            'speed': downloaded_bytes / 1024 / 1024 / interval,  # 3초당 MB/s
             'transactions': 0,  # 업데이트 필요시 수정
             'eta': eta  # ETA 추가
         }
@@ -77,7 +79,7 @@ def log_sync_status():
         previous_bytes_recv = bytes_recv
         previous_block = current_block
 
-        time.sleep(3)
+        time.sleep(interval)
 
 # 스크립트 실행
 log_sync_status()
