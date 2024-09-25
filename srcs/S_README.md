@@ -47,3 +47,10 @@ pip freeze
 
 ## 프로젝트 사용
 프로젝트를 실행하려면 위의 단계를 완료한 후, 관련 Python 파일을 실행하면 됩니다.
+
+### 1. bitcoin github 다운로드 (https://github.com/bitcoin/bitcoin))
+``` bash
+git clone https://github.com/bitcoin/bitcoin.git
+```
+
+### 2
