@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bitcoin Sync Monitor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Bitcoin Sync Status</h1>
+    <div id="sync-status">
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script>
+    async function fetchSyncStatus() {
+      try {
+        const response = await fetch('/sync-status');
+        const data = await response.json();
+        
+        document.getElementById('sync-status').innerHTML = `
+          <p><strong>Current Block:</strong> ${data.currentBlock}/${data.totalBlocks}</p>
+          <p><strong>Progress:</strong> ${data.progress.toFixed(2)}%</p>
+          <p><strong>Added Blocks:</strong> +${data.addedBlocks}</p>
+          <p><strong>Added Data:</strong> ${data.addedData.toFixed(2)} MB</p>
+          <p><strong>Speed:</strong> ${data.speed.toFixed(2)} MB/s</p>
+          <p><strong>Transactions:</strong> +${data.transactions}</p>
+          <p><strong>ETA:</strong> ${data.eta}</p>
+        `;
+      } catch (error) {
+        console.error('Error fetching sync status:', error);
+        document.getElementById('sync-status').innerHTML = `<p>Error loading sync status</p>`;
+      }
+    }
+
+    // 3초마다 상태 업데이트
+    setInterval(fetchSyncStatus, 3000);
+    fetchSyncStatus();
+  </script>
+</body>
+</html>
