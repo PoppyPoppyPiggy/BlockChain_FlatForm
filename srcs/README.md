@@ -49,13 +49,10 @@ pip freeze
 ```bash
 sudo apt-get update
 ### bitcoin autogen.sh위한 필수 라이브러리
-sudo apt-get install autoconf libtool autotools-dev automake pkg-config bsdmainutils python3
+sudo apt-get install autoconf libtool autotools-dev automake pkg-config bsdmainutils python3 libboost-all-dev
 ### g++, make 관련 빌드 도구
 sudo apt-get install build-essential
-
 ```
-
-
 
 ## 프로젝트 사용
 프로젝트를 실행하려면 위의 단계를 완료한 후, 관련 Python 파일을 실행하면 됩니다.
@@ -67,6 +64,35 @@ git clone https://github.com/bitcoin/bitcoin.git
 git checkout v.20.0
 ./autogen.sh
 
-### configuration
-./configure --with-incompatible-bdb
+### 에러 해결
+```bash
+cd ~/db-5.3.28.NC/src/dbinc
+sed -i 's/__atomic_compare_exchange/__atomic_compare_exchange_db/g' atomic.h
+
+cd ~/db-5.3.28.NC/build_unix
+make clean
+../dist/configure --enable-cxx --disable-shared --with-pic --prefix=/usr/local
+make
+sudo make install
 ```
+
+### configuration
+```bash
+./configure --with-incompatible-bdb --with-gui=no LDFLAGS="-L/usr/local/lib" CPPFLAGS="-I/usr/local/include"
+```
+주요 사항:
+
+bitcoind, bitcoin-cli, bitcoin-tx, bitcoin-wallet 등의 실행 파일들이 /usr/local/bin 디렉토리에 설치되었습니다.
+라이브러리 파일(libbitcoinconsensus)도 /usr/local/lib에 설치되었고, 관련 헤더 파일도 /usr/local/include에 설치되었습니다.
+설치 중에 에러 메시지는 없었으며, 모든 과정이 정상적으로 진행되었습니다.
+이제 설치된 프로그램을 사용할 준비가 된 상태입니다. bitcoind를 백그라운드에서 실행하고 싶다면, 아래 명령어로 실행할 수 있습니다:
+
+### Download blocks
+```bash
+### background 에서 bitcoin 다운로드 시작
+bitcoind -daemon
+bitcoin-cli getblockhaininfo 
+```
+
+
+### 
