@@ -45,12 +45,28 @@ pip install -r requirements.txt
 pip freeze
 ```
 
+### 4. 필수 패키지 설치
+```bash
+sudo apt-get update
+### bitcoin autogen.sh위한 필수 라이브러리
+sudo apt-get install autoconf libtool autotools-dev automake pkg-config bsdmainutils python3
+### g++, make 관련 빌드 도구
+sudo apt-get install build-essential
+
+```
+
+
+
 ## 프로젝트 사용
 프로젝트를 실행하려면 위의 단계를 완료한 후, 관련 Python 파일을 실행하면 됩니다.
 
 ### 1. bitcoin github 다운로드 (https://github.com/bitcoin/bitcoin))
+해당 버전은 v0.20.0 으로 진행합니다
 ``` bash
-git clone https://github.com/bitcoin/bitcoin.git
-```
+git clone https://github.com/bitcoin/bitcoin.git 
+git checkout v.20.0
+./autogen.sh
 
-### 2
+### configuration
+./configure --with-incompatible-bdb
+```
