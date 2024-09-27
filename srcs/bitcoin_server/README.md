@@ -1,4 +1,4 @@
-#README_SERVER
+#bitcoin_server
 
 ## 개요
 `Flask`, `Node.js`, `Express.js`, `HTML`, `CSS` 를 사용하여 비트코인 동기화 상태를 실시간 웹 페이지로 만들어 보자

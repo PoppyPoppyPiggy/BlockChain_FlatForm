@@ -1,0 +1,3 @@
+[submodule "srcs/bitcoin_ecc/programmingbitcoin"]
+	path = srcs/bitcoin_ecc/programmingbitcoin
+	url = https://github.com/user/repo.git
