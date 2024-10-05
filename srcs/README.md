@@ -130,7 +130,7 @@ bitcoin-cli getnewaddress
 bitcoin-cli listunspent
 ```
 
-2. 트랜잭션 명령어
+### 2. 트랜잭션 명령어
 ```bash
 #createrawtransaction: 새로운 트랜잭션을 생성합니다. 이는 트랜잭션을 생성하되 서명하지 않은 상태입니다.
 bitcoin-cli createrawtransaction '[{ "txid": "id", "vout": n }]' '{ "address": amount }'
@@ -142,7 +142,7 @@ bitcoin-cli signrawtransaction <hexstring>
 bitcoin-cli sendrawtransaction <signed_hexstring>
 ```
 
-3. 블록체인 정보
+### 3. 블록체인 정보
 ```bash
 #getblockchaininfo: 현재 비트코인 블록체인에 대한 정보를 제공합니다.
 bitcoin-cli getblockchaininfo
@@ -160,7 +160,7 @@ bitcoin-cli getblockhash <block_height>
 bitcoin-cli getrawtransaction <txid>
 ```
 
-4. 노드 제어
+### 4. 노드 제어
 ```bash
 #getnetworkinfo: 네트워크 상태 및 설정에 대한 정보를 제공합니다.
 bitcoin-cli getnetworkinfo
