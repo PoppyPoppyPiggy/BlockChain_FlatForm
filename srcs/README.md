@@ -111,8 +111,9 @@ IBD 동안, 노드는 제네시스 블록(첫 번째 블록)부터 시작하여 
 `visualizeDownlads` 코드는 해당 `bitcoin-cli`를 활용하여 다운로드를 시각화 할수 있게하는 코드, 로그로 찍혀서 진행상황을 파악할 수 있게합니다
 
 ## 비트코인 관련 API
+
+### 1. 지갑 명령어
 ```bash
-1. 지갑 명령어
 #getbalance: 지갑의 잔액을 확인합니다.
 bitcoin-cli getbalance
 
@@ -129,8 +130,8 @@ bitcoin-cli getnewaddress
 bitcoin-cli listunspent
 ```
 
-```bash
 2. 트랜잭션 명령어
+```bash
 #createrawtransaction: 새로운 트랜잭션을 생성합니다. 이는 트랜잭션을 생성하되 서명하지 않은 상태입니다.
 bitcoin-cli createrawtransaction '[{ "txid": "id", "vout": n }]' '{ "address": amount }'
 
@@ -141,8 +142,8 @@ bitcoin-cli signrawtransaction <hexstring>
 bitcoin-cli sendrawtransaction <signed_hexstring>
 ```
 
-```bash
 3. 블록체인 정보
+```bash
 #getblockchaininfo: 현재 비트코인 블록체인에 대한 정보를 제공합니다.
 bitcoin-cli getblockchaininfo
 
@@ -159,8 +160,8 @@ bitcoin-cli getblockhash <block_height>
 bitcoin-cli getrawtransaction <txid>
 ```
 
-```bash
 4. 노드 제어
+```bash
 #getnetworkinfo: 네트워크 상태 및 설정에 대한 정보를 제공합니다.
 bitcoin-cli getnetworkinfo
 
@@ -171,8 +172,8 @@ bitcoin-cli addnode <node_ip> add
 bitcoin-cli getpeerinfo
 ```
 
+### 5. 마이닝 및 블록 생성
 ```bash
-5. 마이닝 및 블록 생성
 # getmininginfo: 채굴 관련 정보를 조회합니다.
 bitcoin-cli getmininginfo
 
@@ -180,8 +181,8 @@ bitcoin-cli getmininginfo
 bitcoin-cli generatetoaddress <nblocks> <address> 
 ```
 
+### 6. 기타 유용한 명령어
 ```bash
-6. 기타 유용한 명령어
 #getmempoolinfo: 메모리풀(트랜잭션 대기열)에 있는 트랜잭션 정보를 조회합니다.
 bitcoin-cli getmempoolinfo
 
