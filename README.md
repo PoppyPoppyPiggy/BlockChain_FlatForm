@@ -30,6 +30,8 @@
 1. **클론**:
     ```bash
     git clone https://github.com/PoppyPoppyPiggy/BlockChain_FlatForm.git
+    # 서브 모듈도 포함하려면 다음과 같이 입력하세요.
+    git clone --recurse-submodules https://github.com/PoppyPoppyPiggy/BlockChain_FlatForm.git
     ```
 
 2. **의존성 설치**:
