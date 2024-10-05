@@ -110,3 +110,84 @@ IBD 동안, 노드는 제네시스 블록(첫 번째 블록)부터 시작하여 
 ## 다운로드 시각화
 `visualizeDownlads` 코드는 해당 `bitcoin-cli`를 활용하여 다운로드를 시각화 할수 있게하는 코드, 로그로 찍혀서 진행상황을 파악할 수 있게합니다
 
+## 비트코인 관련 API
+```bash
+1. 지갑 명령어
+#getbalance: 지갑의 잔액을 확인합니다.
+bitcoin-cli getbalance
+
+#listtransactions: 지갑의 최근 트랜잭션 내역을 확인합니다.
+bitcoin-cli listtransactions
+
+#sendtoaddress: 지정한 주소로 비트코인을 전송합니다.
+bitcoin-cli sendtoaddress <address> <amount>
+
+#getnewaddress: 새로운 비트코인 주소를 생성합니다.
+bitcoin-cli getnewaddress
+
+#listunspent: 지갑에서 사용되지 않은 트랜잭션 출력(UTXO)을 조회합니다.
+bitcoin-cli listunspent
+```
+
+```bash
+2. 트랜잭션 명령어
+#createrawtransaction: 새로운 트랜잭션을 생성합니다. 이는 트랜잭션을 생성하되 서명하지 않은 상태입니다.
+bitcoin-cli createrawtransaction '[{ "txid": "id", "vout": n }]' '{ "address": amount }'
+
+#signrawtransaction: 서명되지 않은 트랜잭션에 서명합니다.
+bitcoin-cli signrawtransaction <hexstring>
+
+#sendrawtransaction: 서명된 트랜잭션을 비트코인 네트워크에 전송합니다.
+bitcoin-cli sendrawtransaction <signed_hexstring>
+```
+
+```bash
+3. 블록체인 정보
+#getblockchaininfo: 현재 비트코인 블록체인에 대한 정보를 제공합니다.
+bitcoin-cli getblockchaininfo
+
+#getblock: 특정 블록의 정보를 조회합니다.
+bitcoin-cli getblock <blockhash>
+
+#getblockcount: 현재 블록체인의 블록 높이를 조회합니다.
+bitcoin-cli getblockcount
+
+#getblockhash: 특정 블록 높이에 대한 블록 해시를 반환합니다.
+bitcoin-cli getblockhash <block_height>
+
+#getrawtransaction: 트랜잭션 해시로 원시 트랜잭션 데이터를 조회합니다.
+bitcoin-cli getrawtransaction <txid>
+```
+
+```bash
+4. 노드 제어
+#getnetworkinfo: 네트워크 상태 및 설정에 대한 정보를 제공합니다.
+bitcoin-cli getnetworkinfo
+
+#addnode: 새로운 노드를 네트워크에 추가합니다.
+bitcoin-cli addnode <node_ip> add
+
+#getpeerinfo: 현재 연결된 피어의 정보를 반환합니다.
+bitcoin-cli getpeerinfo
+```
+
+```bash
+5. 마이닝 및 블록 생성
+# getmininginfo: 채굴 관련 정보를 조회합니다.
+bitcoin-cli getmininginfo
+
+#generatetoaddress: 특정 주소로 비트코인을 보내는 블록을 생성합니다. 테스트넷에서만 사용할 수 있습니다.
+bitcoin-cli generatetoaddress <nblocks> <address> 
+```
+
+```bash
+6. 기타 유용한 명령어
+#getmempoolinfo: 메모리풀(트랜잭션 대기열)에 있는 트랜잭션 정보를 조회합니다.
+bitcoin-cli getmempoolinfo
+
+#gettxout: 특정 트랜잭션 출력 정보를 확인합니다.
+bitcoin-cli gettxout <txid> <n>
+
+#estimatefee: 다음 블록에 포함되기 위한 예상 수수료를 계산합니다.
+bitcoin-cli estimatefee <nblocks>
+```
